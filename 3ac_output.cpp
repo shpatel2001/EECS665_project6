@@ -82,11 +82,20 @@ Opd * AssignExpNode::flatten(Procedure * proc){
 }
 
 Opd * LValNode::flatten(Procedure * proc){
-	TODO(Implement me)
+	TODO(how did you get here?)
 }
 
 Opd * CallExpNode::flatten(Procedure * proc){
-	TODO(Implement me)
+	for(auto args : *myArgs)
+	{
+		Opd * argOpd = args->flatten(proc);
+		SetArgQuad * setarg = new SetArgQuad(argOpd->getWidth(), argOpd);
+		proc->addQuad(setarg);
+	}
+	SymOpd * IdOpd = this->myID->flatten(proc);
+	CallQuad * call = new CallQuad(IdOpd->getSym());
+	proc->addQuad(call);
+	return IdOpd;
 }
 
 Opd * NegNode::flatten(Procedure * proc){
@@ -178,7 +187,7 @@ void WhileStmtNode::to3AC(Procedure * proc){
 }
 
 void CallStmtNode::to3AC(Procedure * proc){
-	TODO(Implement me)
+	this->myCallExp->flatten(proc);
 }
 
 void ReturnStmtNode::to3AC(Procedure * proc){
