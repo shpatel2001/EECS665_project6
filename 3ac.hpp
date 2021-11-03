@@ -15,6 +15,7 @@ class TypeAnalysis;
 class Procedure;
 class IRProgram;
 
+//target of a jump
 class Label{
 public:
 	Label(std::string nameIn){
@@ -43,6 +44,7 @@ private:
 	size_t myWidth;
 };
 
+//variables
 class SymOpd : public Opd{
 public:
 	virtual std::string valString() override{
