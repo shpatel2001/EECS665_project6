@@ -11,7 +11,15 @@ IRProgram * ProgramNode::to3AC(TypeAnalysis * ta){
 }
 
 void FnDeclNode::to3AC(IRProgram * prog){
-	TODO(Implement me)
+	Procedure * proc = prog->makeProc(this->ID()->getName());
+	for(auto Formal : *myFormals)
+	{
+		Formal->to3AC(proc);
+	}
+	for(auto stmt : *myBody)
+	{
+		stmt->to3AC(proc);
+	}
 }
 
 void FnDeclNode::to3AC(Procedure * proc){
@@ -31,7 +39,10 @@ void FormalDeclNode::to3AC(IRProgram * prog){
 }
 
 void FormalDeclNode::to3AC(Procedure * proc){
-	TODO(Implement me)
+	SemSymbol * sym = ID()->getSymbol();
+	assert(sym != nullptr);
+	proc->gatherLocal(sym);
+	//might need to change this
 }
 
 void RecordTypeDeclNode::to3AC(IRProgram * prog){
@@ -53,15 +64,21 @@ Opd * StrLitNode::flatten(Procedure * proc){
 }
 
 Opd * TrueNode::flatten(Procedure * proc){
-	TODO(Implement me)
+	const DataType * type = proc->getProg()->nodeType(this);
+	return new LitOpd(std::to_string(1), 8);
 }
 
 Opd * FalseNode::flatten(Procedure * proc){
-	TODO(Implement me)
+	const DataType * type = proc->getProg()->nodeType(this);
+	return new LitOpd(std::to_string(0), 8);
 }
 
 Opd * AssignExpNode::flatten(Procedure * proc){
-	TODO(Implement me)
+	Opd * srcOpd = this->mySrc->flatten(proc);
+	Opd * dstOpd = this->myDst->flatten(proc);
+	AssignQuad * assign = new AssignQuad(dstOpd, srcOpd);
+	proc->addQuad(assign);
+	return dstOpd;
 }
 
 Opd * LValNode::flatten(Procedure * proc){
@@ -129,7 +146,7 @@ Opd * GreaterEqNode::flatten(Procedure * proc){
 }
 
 void AssignStmtNode::to3AC(Procedure * proc){
-	TODO(Implement me)
+	this->myExp->flatten(proc);
 }
 
 void PostIncStmtNode::to3AC(Procedure * proc){
@@ -187,7 +204,6 @@ Opd * IndexNode::flatten(Procedure * proc){
 //We only get to this node if we are in a stmt
 // context (DeclNodes protect descent) 
 Opd * IDNode::flatten(Procedure * proc){
-	TODO(Implement me)
-}
+	return proc->getSymOpd(this->mySymbol);
 
 }
