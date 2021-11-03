@@ -40,10 +40,9 @@ void FormalDeclNode::to3AC(IRProgram * prog){
 }
 
 void FormalDeclNode::to3AC(Procedure * proc){
-	SemSymbol * sym = ID()->getSymbol();
-	assert(sym != nullptr);
-	proc->gatherLocal(sym);
 	//might need to change this
+	Opd * IDOpd = this->ID()->to3AC(proc);
+	GetArgQuad(IDOpd, IDOpd->getWidth())
 }
 
 void RecordTypeDeclNode::to3AC(IRProgram * prog){
