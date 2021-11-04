@@ -46,11 +46,11 @@ void FormalDeclNode::to3AC(Procedure * proc) {
 }
 
 void RecordTypeDeclNode::to3AC(IRProgram * prog) {
-	
+	prog->gatherGlobal(myID->getSymbol());
 }
 
 void RecordTypeDeclNode::to3AC(Procedure * proc) {
-	TODO("This shouldn't happen")
+	proc->gatherLocal(myID->getSymbol());
 }
 
 Opd * IntLitNode::flatten(Procedure * proc) {
@@ -312,7 +312,7 @@ void VarDeclNode::to3AC(IRProgram * prog) {
 }
 
 Opd * IndexNode::flatten(Procedure * proc) {
-	TODO(Implement me)
+	
 }
 
 //We only get to this node if we are in a stmt

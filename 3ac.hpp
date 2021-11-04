@@ -301,6 +301,7 @@ public:
 	Quad * popQuad();
 	IRProgram * getProg();
 	std::list<SymOpd *> getFormals() { return formals; }
+	std::map<SemSymbol *, SymOpd *> getLocals() { return locals; }
 	SymOpd * getFormal(size_t idx);
 	cshanty::Label * makeLabel();
 
