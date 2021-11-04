@@ -41,7 +41,7 @@ void FormalDeclNode::to3AC(IRProgram * prog){
 
 void FormalDeclNode::to3AC(Procedure * proc){
 	//might need to change this
-	Opd * IDOpd = this->ID()->flatten(proc);
+	Opd * IDOpd = ID()->flatten(proc);
 	// GetArgQuad(IDOpd, IDOpd->getWidth());
 }
 
