@@ -160,14 +160,24 @@ private:
 class RecordTypeDeclNode : public DeclNode{
 public:
 	RecordTypeDeclNode(Position *p, IDNode *id, std::list<VarDeclNode*> *body)
-	: DeclNode(p), myID(id), myFields(body){ }
+	: DeclNode(p), myID(id), myFields(body) {
+		fieldOffsets = new HashMap<std::string, int>();
+		int offset = 0;
+		for (auto field : *myFields)
+		{
+			(*fieldOffsets)[field->ID()->getName()] = offset;
+			offset++;
+		}
+	 }
 	void unparse(std::ostream& out, int indent) override;
 	TypeNode * getTypeNode(){ return nullptr; }
 	bool nameAnalysis(SymbolTable * symTab) override;
 	void typeAnalysis(TypeAnalysis * typing) override;
+	int getOffset(std::string name) { return (*fieldOffsets)[name]; }
 	virtual void to3AC(Procedure * proc) override;
 	virtual void to3AC(IRProgram * prog) override;
 private:
+	HashMap<std::string, int> * fieldOffsets;
 	IDNode * myID;
 	std::list<VarDeclNode *> * myFields;
 };

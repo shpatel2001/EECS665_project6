@@ -42,7 +42,7 @@ void FormalDeclNode::to3AC(IRProgram * prog){
 void FormalDeclNode::to3AC(Procedure * proc){
 	//might need to change this
 	Opd * IDOpd = this->ID()->flatten(proc);
-	GetArgQuad(IDOpd, IDOpd->getWidth());
+	// GetArgQuad(IDOpd, IDOpd->getWidth());
 }
 
 void RecordTypeDeclNode::to3AC(IRProgram * prog){
@@ -82,7 +82,7 @@ Opd * AssignExpNode::flatten(Procedure * proc){
 }
 
 Opd * LValNode::flatten(Procedure * proc){
-	TODO(how did you get here?)
+	TODO("how did you get here?");
 }
 
 Opd * CallExpNode::flatten(Procedure * proc){
@@ -92,10 +92,10 @@ Opd * CallExpNode::flatten(Procedure * proc){
 		SetArgQuad * setarg = new SetArgQuad(argOpd->getWidth(), argOpd);
 		proc->addQuad(setarg);
 	}
-	SymOpd * IdOpd = this->myID->flatten(proc);
-	CallQuad * call = new CallQuad(IdOpd->getSym());
+	SemSymbol * IdSym = myID->getSymbol();
+	CallQuad * call = new CallQuad(IdSym);
 	proc->addQuad(call);
-	return IdOpd;
+	return proc->getSymOpd(IdSym);
 }
 
 Opd * NegNode::flatten(Procedure * proc){
@@ -106,51 +106,111 @@ Opd * NotNode::flatten(Procedure * proc){
 }
 
 Opd * PlusNode::flatten(Procedure * proc){
-	TODO(Implement me)
+	Opd * lOpd = myExp1->flatten(proc);
+	Opd * rOpd = myExp2->flatten(proc);
+	AuxOpd * temp = proc->makeTmp(8);
+	BinOpQuad * boq = new BinOpQuad(temp, ADD64, lOpd, rOpd);
+	proc->addQuad(boq);
+	return temp;
 }
 
 Opd * MinusNode::flatten(Procedure * proc){
-	TODO(Implement me)
+	Opd * lOpd = myExp1->flatten(proc);
+	Opd * rOpd = myExp2->flatten(proc);
+	AuxOpd * temp = proc->makeTmp(8);
+	BinOpQuad * boq = new BinOpQuad(temp, SUB64, lOpd, rOpd);
+	proc->addQuad(boq);
+	return temp;
 }
 
 Opd * TimesNode::flatten(Procedure * proc){
-	TODO(Implement me)
+	Opd * lOpd = myExp1->flatten(proc);
+	Opd * rOpd = myExp2->flatten(proc);
+	AuxOpd * temp = proc->makeTmp(8);
+	BinOpQuad * boq = new BinOpQuad(temp, MULT64, lOpd, rOpd);
+	proc->addQuad(boq);
+	return temp;
 }
 
 Opd * DivideNode::flatten(Procedure * proc){
-	TODO(Implement me)
+	Opd * lOpd = myExp1->flatten(proc);
+	Opd * rOpd = myExp2->flatten(proc);
+	AuxOpd * temp = proc->makeTmp(8);
+	BinOpQuad * boq = new BinOpQuad(temp, DIV64, lOpd, rOpd);
+	proc->addQuad(boq);
+	return temp;
 }
 
 Opd * AndNode::flatten(Procedure * proc){
-	TODO(Implement me)
+	Opd * lOpd = myExp1->flatten(proc);
+	Opd * rOpd = myExp2->flatten(proc);
+	AuxOpd * temp = proc->makeTmp(8);
+	BinOpQuad * boq = new BinOpQuad(temp, AND64, lOpd, rOpd);
+	proc->addQuad(boq);
+	return temp;
 }
 
 Opd * OrNode::flatten(Procedure * proc){
-	TODO(Implement me)
+	Opd * lOpd = myExp1->flatten(proc);
+	Opd * rOpd = myExp2->flatten(proc);
+	AuxOpd * temp = proc->makeTmp(8);
+	BinOpQuad * boq = new BinOpQuad(temp, OR64, lOpd, rOpd);
+	proc->addQuad(boq);
+	return temp;
 }
 
 Opd * EqualsNode::flatten(Procedure * proc){
-	TODO(Implement me)
+	Opd * lOpd = myExp1->flatten(proc);
+	Opd * rOpd = myExp2->flatten(proc);
+	AuxOpd * temp = proc->makeTmp(8);
+	BinOpQuad * boq = new BinOpQuad(temp, EQ64, lOpd, rOpd);
+	proc->addQuad(boq);
+	return temp;
 }
 
 Opd * NotEqualsNode::flatten(Procedure * proc){
-	TODO(Implement me)
+	Opd * lOpd = myExp1->flatten(proc);
+	Opd * rOpd = myExp2->flatten(proc);
+	AuxOpd * temp = proc->makeTmp(8);
+	BinOpQuad * boq = new BinOpQuad(temp, NEQ64, lOpd, rOpd);
+	proc->addQuad(boq);
+	return temp;
 }
 
 Opd * LessNode::flatten(Procedure * proc){
-	TODO(Implement me)
+	Opd * lOpd = myExp1->flatten(proc);
+	Opd * rOpd = myExp2->flatten(proc);
+	AuxOpd * temp = proc->makeTmp(8);
+	BinOpQuad * boq = new BinOpQuad(temp, LT64, lOpd, rOpd);
+	proc->addQuad(boq);
+	return temp;
 }
 
 Opd * GreaterNode::flatten(Procedure * proc){
-	TODO(Implement me)
+	Opd * lOpd = myExp1->flatten(proc);
+	Opd * rOpd = myExp2->flatten(proc);
+	AuxOpd * temp = proc->makeTmp(8);
+	BinOpQuad * boq = new BinOpQuad(temp, GT64, lOpd, rOpd);
+	proc->addQuad(boq);
+	return temp;
 }
 
 Opd * LessEqNode::flatten(Procedure * proc){
-	TODO(Implement me)
+	Opd * lOpd = myExp1->flatten(proc);
+	Opd * rOpd = myExp2->flatten(proc);
+	AuxOpd * temp = proc->makeTmp(8);
+	BinOpQuad * boq = new BinOpQuad(temp, LTE64, lOpd, rOpd);
+	proc->addQuad(boq);
+	return temp;
 }
 
 Opd * GreaterEqNode::flatten(Procedure * proc){
-	TODO(Implement me)
+	Opd * lOpd = myExp1->flatten(proc);
+	Opd * rOpd = myExp2->flatten(proc);
+	AuxOpd * temp = proc->makeTmp(8);
+	BinOpQuad * boq = new BinOpQuad(temp, GTE64, lOpd, rOpd);
+	proc->addQuad(boq);
+	return temp;
 }
 
 void AssignStmtNode::to3AC(Procedure * proc){
@@ -215,7 +275,8 @@ Opd * IndexNode::flatten(Procedure * proc){
 
 //We only get to this node if we are in a stmt
 // context (DeclNodes protect descent) 
-Opd * IDNode::flatten(Procedure * proc){
+Opd * IDNode::flatten(Procedure * proc) {
 	return proc->getSymOpd(this->mySymbol);
+}
 
 }
