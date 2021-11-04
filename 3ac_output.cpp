@@ -227,11 +227,17 @@ void AssignStmtNode::to3AC(Procedure * proc) {
 }
 
 void PostIncStmtNode::to3AC(Procedure * proc){
-	TODO(Implement me)
+	Opd * opd = myLVal->flatten(proc);
+	LitOpd * lopd = new LitOpd("1", 8);
+	BinOpQuad * boq = new BinOpQuad(opd, ADD64, opd, lopd);
+	proc->addQuad(boq);
 }
 
 void PostDecStmtNode::to3AC(Procedure * proc){
-	TODO(Implement me)
+	Opd * opd = myLVal->flatten(proc);
+	LitOpd * lopd = new LitOpd("1", 8);
+	BinOpQuad * boq = new BinOpQuad(opd, SUB64, opd, lopd);
+	proc->addQuad(boq);
 }
 
 void ReceiveStmtNode::to3AC(Procedure * proc){
@@ -281,11 +287,18 @@ void WhileStmtNode::to3AC(Procedure * proc){
 }
 
 void CallStmtNode::to3AC(Procedure * proc){
-	this->myCallExp->flatten(proc);
+	myCallExp->flatten(proc);
+	auto aux = proc->makeTmp(8);
+	auto getRet = new GetRetQuad(aux);
+	proc->addQuad(getRet);
 }
 
 void ReturnStmtNode::to3AC(Procedure * proc){
-	TODO(Implement me)
+	auto expOpd = myExp->flatten(proc);
+	auto setret = new SetRetQuad(expOpd);
+	proc->addQuad(setret);
+	auto * goto_end = new GotoQuad(proc->getLeaveLabel());
+    proc->addQuad(goto_end);
 }
 
 void VarDeclNode::to3AC(Procedure * proc){
