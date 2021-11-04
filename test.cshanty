@@ -1,6 +1,6 @@
 int a;
-a = 1;
 
-void test(int a)
+void test(int b)
 {
+	a = 1;
 }
