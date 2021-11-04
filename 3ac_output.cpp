@@ -99,11 +99,19 @@ Opd * CallExpNode::flatten(Procedure * proc){
 }
 
 Opd * NegNode::flatten(Procedure * proc){
-	TODO(Implement me)
+	Opd * src = myExp->flatten(proc);
+	AuxOpd * temp = proc->makeTmp(8);
+	UnaryOpQuad * quad = new UnaryOpQuad(temp, NEG64, src);
+	proc->addQuad(quad);
+	return temp;
 }
 
 Opd * NotNode::flatten(Procedure * proc){
-	TODO(Implement me)
+	Opd * src = myExp->flatten(proc);
+	AuxOpd * temp = proc->makeTmp(8);
+	UnaryOpQuad * quad = new UnaryOpQuad(temp, NOT8, src);
+	proc->addQuad(quad);
+	return temp;
 }
 
 Opd * PlusNode::flatten(Procedure * proc){
