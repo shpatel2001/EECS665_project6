@@ -119,7 +119,7 @@ enum BinOp {
 	ADD64, SUB64, DIV64, MULT64, EQ64, NEQ64, LT64, GT64, LTE64, GTE64, AND64, OR64
 };
 enum UnaryOp{
-	NEG64, NOT8
+	NEG64, NOT64
 };
 
 class Quad{

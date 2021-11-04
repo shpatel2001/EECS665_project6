@@ -109,7 +109,7 @@ Opd * NegNode::flatten(Procedure * proc){
 Opd * NotNode::flatten(Procedure * proc){
 	Opd * src = myExp->flatten(proc);
 	AuxOpd * temp = proc->makeTmp(8);
-	UnaryOpQuad * quad = new UnaryOpQuad(temp, NOT8, src);
+	UnaryOpQuad * quad = new UnaryOpQuad(temp, NOT64, src);
 	proc->addQuad(quad);
 	return temp;
 }
