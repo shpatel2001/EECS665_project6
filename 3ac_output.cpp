@@ -235,14 +235,16 @@ void PostDecStmtNode::to3AC(Procedure * proc){
 }
 
 void ReceiveStmtNode::to3AC(Procedure * proc){
-	Opd * DstOpd = this->myDst->flatten(proc);
-	ReceiveQuad * receive = new ReceiveQuad(DstOpd,);
+	Opd * DstOpd = myDst->flatten(proc);
+	auto type = proc->getProg()->nodeType(myDst);
+	ReceiveQuad * receive = new ReceiveQuad(DstOpd, type);
 	proc->addQuad(receive);
 }
 
 void ReportStmtNode::to3AC(Procedure * proc){
-	Opd * srcOpd = this->mySrc->flatten(proc);
-	ReportQuad * report = new ReportQuad(srcOpd, );
+	Opd * srcOpd = mySrc->flatten(proc);
+	auto type = proc->getProg()->nodeType(mySrc);
+	ReportQuad * report = new ReportQuad(srcOpd, type);
 	proc->addQuad(report);
 }
 
