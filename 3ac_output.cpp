@@ -82,7 +82,7 @@ Opd * AssignExpNode::flatten(Procedure * proc){
 }
 
 Opd * LValNode::flatten(Procedure * proc) {
-	return nullptr;
+	TODO("what");
 }
 
 Opd * CallExpNode::flatten(Procedure * proc){
