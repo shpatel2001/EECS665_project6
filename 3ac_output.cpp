@@ -12,7 +12,6 @@ IRProgram * ProgramNode::to3AC(TypeAnalysis * ta){
 
 void FnDeclNode::to3AC(IRProgram * prog){
 	Procedure * proc = prog->makeProc(ID()->getName());
-	EnterQuad * enter = new EnterQuad(proc);
 	for(auto Formal : *myFormals)
 	{
 		Formal->to3AC(proc);
@@ -258,27 +257,64 @@ void IfStmtNode::to3AC(Procedure * proc){
 	{
 		stmt->to3AC(proc);
 	}
+	NopQuad * endofif = new NopQuad();
+	endofif->addLabel(end_of_if);
+	proc->addQuad(endofif);
 	//not sure about how to jump to the end of the if
 }
 
 void IfElseStmtNode::to3AC(Procedure * proc){
 	Opd * CondOpd = myCond->flatten(proc);
+	
+	Label * end_of_true_body = proc->makeLabel();
 	Label * end_of_if = proc->makeLabel();
-	IfzQuad * ifz = new IfzQuad(CondOpd,end_of_if);
+	
+	IfzQuad * ifz = new IfzQuad(CondOpd,end_of_true_body);
 	proc->addQuad(ifz);
 	for(auto stmt : *myBodyTrue)
 	{
 		stmt->to3AC(proc);
 	}
+	GotoQuad * goto_end = new GotoQuad(end_of_if);
+	proc->addQuad(goto_end);
+
+	NopQuad * endoftrue = new NopQuad();
+	endoftrue->addLabel(end_of_true_body);
+	proc->addQuad(endoftrue);
 	for(auto stmt : *myBodyFalse)
 	{
 		stmt->to3AC(proc);
 	}
+	NopQuad * endofif = new NopQuad();
+	endofif->addLabel(end_of_if);
+	proc->addQuad(endofif);
 	//not sure about how to jump to the end of the if
 }
 
 void WhileStmtNode::to3AC(Procedure * proc){
-	TODO(Implement me)
+	Opd * CondOpd = myCond->flatten(proc);
+	
+	Label * start_of_while = proc->makeLabel();
+	Label * end_of_while = proc->makeLabel();
+
+	NopQuad * startofwhile = new NopQuad();
+	endoftrue->addLabel(start_of_while);
+	proc->addQuad(startofwhile);
+
+	IfzQuad * ifz = new IfzQuad(CondOpd,end_of_while);
+	proc->addQuad(ifz);
+
+	for(auto stmt : *myBody)
+	{
+		stmt->to3AC(proc);
+	}
+
+	GotoQuad * goto_start = new GotoQuad(start_of_while);
+	proc->addQuad(goto_start);
+
+	NopQuad * endofwhile = new NopQuad();
+	endoftrue->addLabel(end_of_while);
+	proc->addQuad(endofwhile);
 }
 
 void CallStmtNode::to3AC(Procedure * proc){

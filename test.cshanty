@@ -1,10 +1,16 @@
 int a;
 
-void test(int b)
+int test(int b)
 {
-	a = b;
+	a = a + 1;
+	while (true)
+	{
+		a++;
+	}
+	return a;
 }
 
 int main() {
+	int c;
 	test(2);
 }
