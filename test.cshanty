@@ -1,6 +1,10 @@
 int a;
 
-int test(int b)
+record someRec {
+	int x;
+}
+
+void test(int b)
 {
 	a = a + 1;
 	while (true)
@@ -13,4 +17,6 @@ int test(int b)
 int main() {
 	int c;
 	test(2);
+	someRec w;
+	w[x] = 1;
 }

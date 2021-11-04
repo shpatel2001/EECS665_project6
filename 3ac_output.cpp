@@ -39,17 +39,18 @@ void FormalDeclNode::to3AC(IRProgram * prog){
 }
 
 void FormalDeclNode::to3AC(Procedure * proc){
-	Opd * IDOpd = ID()->flatten(proc);
-	GetArgQuad * getQuad = new GetArgQuad(8, IDOpd);
+	proc->gatherFormal(ID()->getSymbol());
+	auto formalList = proc->getFormals();
+	GetArgQuad * getQuad = new GetArgQuad(formalList.size(), formalList.back());
 	proc->addQuad(getQuad);
 }
 
 void RecordTypeDeclNode::to3AC(IRProgram * prog){
-	TODO(Implement me)
+	
 }
 
 void RecordTypeDeclNode::to3AC(Procedure * proc){
-	TODO(Implement me)
+	TODO("This shouldn't happen")
 }
 
 Opd * IntLitNode::flatten(Procedure * proc){
@@ -75,7 +76,6 @@ Opd * FalseNode::flatten(Procedure * proc){
 Opd * AssignExpNode::flatten(Procedure * proc){
 	Opd * srcOpd = mySrc->flatten(proc);
 	Opd * dstOpd = myDst->flatten(proc);
-	std::cout << (dstOpd == nullptr);
 	AssignQuad * assign = new AssignQuad(dstOpd, srcOpd);
 	proc->addQuad(assign);
 	return dstOpd;
@@ -227,11 +227,17 @@ void AssignStmtNode::to3AC(Procedure * proc) {
 }
 
 void PostIncStmtNode::to3AC(Procedure * proc){
-	TODO(Implement me)
+	Opd * opd = myLVal->flatten(proc);
+	LitOpd * lopd = new LitOpd("1", 8);
+	BinOpQuad * boq = new BinOpQuad(opd, ADD64, opd, lopd);
+	proc->addQuad(boq);
 }
 
 void PostDecStmtNode::to3AC(Procedure * proc){
-	TODO(Implement me)
+	Opd * opd = myLVal->flatten(proc);
+	LitOpd * lopd = new LitOpd("1", 8);
+	BinOpQuad * boq = new BinOpQuad(opd, SUB64, opd, lopd);
+	proc->addQuad(boq);
 }
 
 void ReceiveStmtNode::to3AC(Procedure * proc){
@@ -316,11 +322,18 @@ void WhileStmtNode::to3AC(Procedure * proc){
 }
 
 void CallStmtNode::to3AC(Procedure * proc){
-	this->myCallExp->flatten(proc);
+	myCallExp->flatten(proc);
+	auto aux = proc->makeTmp(8);
+	auto getRet = new GetRetQuad(aux);
+	proc->addQuad(getRet);
 }
 
 void ReturnStmtNode::to3AC(Procedure * proc){
-	TODO(Implement me)
+	auto expOpd = myExp->flatten(proc);
+	auto setret = new SetRetQuad(expOpd);
+	proc->addQuad(setret);
+	auto * goto_end = new GotoQuad(proc->getLeaveLabel());
+    proc->addQuad(goto_end);
 }
 
 void VarDeclNode::to3AC(Procedure * proc){
