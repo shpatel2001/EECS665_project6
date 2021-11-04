@@ -286,8 +286,31 @@ void IfElseStmtNode::to3AC(Procedure * proc) {
 	proc->addQuad(endofif);
 }
 
-void WhileStmtNode::to3AC(Procedure * proc) {
-	TODO(Implement me)
+void WhileStmtNode::to3AC(Procedure * proc){
+	Opd * CondOpd = myCond->flatten(proc);
+	
+	Label * start_of_while = proc->makeLabel();
+	Label * end_of_while = proc->makeLabel();
+
+	NopQuad * startofwhile = new NopQuad();
+	endoftrue->addLabel(start_of_while);
+	proc->addQuad(startofwhile);
+
+	IfzQuad * ifz = new IfzQuad(CondOpd,end_of_while);
+	proc->addQuad(ifz);
+
+	for(auto stmt : *myBody)
+	{
+		stmt->to3AC(proc);
+	}
+
+	GotoQuad * goto_start = new GotoQuad(start_of_while);
+	proc->addQuad(goto_start);
+
+	NopQuad * endofwhile = new NopQuad();
+	endoftrue->addLabel(end_of_while);
+	proc->addQuad(endofwhile);
+	//help
 }
 
 void CallStmtNode::to3AC(Procedure * proc) {
