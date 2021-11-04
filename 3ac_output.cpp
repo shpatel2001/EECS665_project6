@@ -307,7 +307,6 @@ Opd * IndexNode::flatten(Procedure * proc){
 //We only get to this node if we are in a stmt
 // context (DeclNodes protect descent) 
 Opd * IDNode::flatten(Procedure * proc) {
-	std::cout << mySymbol->getName();
 	return proc->getSymOpd(mySymbol);
 }
 
