@@ -247,11 +247,31 @@ void ReportStmtNode::to3AC(Procedure * proc){
 }
 
 void IfStmtNode::to3AC(Procedure * proc){
-	TODO(Implement me)
+	Opd * CondOpd = myCond->flatten(proc);
+	Label * end_of_if = proc->makeLabel();
+	IfzQuad * ifz = new IfzQuad(CondOpd,end_of_if);
+	proc->addQuad(ifz);
+	for(auto stmt : *myBody)
+	{
+		stmt->to3AC(proc);
+	}
+	//not sure about how to jump to the end of the if
 }
 
 void IfElseStmtNode::to3AC(Procedure * proc){
-	TODO(Implement me)
+	Opd * CondOpd = myCond->flatten(proc);
+	Label * end_of_if = proc->makeLabel();
+	IfzQuad * ifz = new IfzQuad(CondOpd,end_of_if);
+	proc->addQuad(ifz);
+	for(auto stmt : *myBodyTrue)
+	{
+		stmt->to3AC(proc);
+	}
+	for(auto stmt : *myBodyFalse)
+	{
+		stmt->to3AC(proc);
+	}
+	//not sure about how to jump to the end of the if
 }
 
 void WhileStmtNode::to3AC(Procedure * proc){
