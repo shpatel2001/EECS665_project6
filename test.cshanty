@@ -7,4 +7,6 @@ int test(int a)
 int main()
 {
 	test(4);
+	int b;
+	b = b + 2;
 }
