@@ -74,8 +74,8 @@ Opd * FalseNode::flatten(Procedure * proc){
 }
 
 Opd * AssignExpNode::flatten(Procedure * proc){
-	Opd * srcOpd = this->mySrc->flatten(proc);
-	Opd * dstOpd = this->myDst->flatten(proc);
+	Opd * srcOpd = mySrc->flatten(proc);
+	Opd * dstOpd = myDst->flatten(proc);
 	AssignQuad * assign = new AssignQuad(dstOpd, srcOpd);
 	proc->addQuad(assign);
 	return dstOpd;
@@ -307,6 +307,7 @@ Opd * IndexNode::flatten(Procedure * proc){
 //We only get to this node if we are in a stmt
 // context (DeclNodes protect descent) 
 Opd * IDNode::flatten(Procedure * proc) {
+	std::cout << mySymbol->getName();
 	return proc->getSymOpd(mySymbol);
 }
 
