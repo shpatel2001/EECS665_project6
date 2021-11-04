@@ -143,35 +143,75 @@ Opd * DivideNode::flatten(Procedure * proc){
 }
 
 Opd * AndNode::flatten(Procedure * proc){
-	TODO(Implement me)
+	Opd * lOpd = myExp1->flatten(proc);
+	Opd * rOpd = myExp2->flatten(proc);
+	AuxOpd * temp = proc->makeTmp(8);
+	BinOpQuad * boq = new BinOpQuad(temp, AND64, lOpd, rOpd);
+	proc->addQuad(boq);
+	return temp;
 }
 
 Opd * OrNode::flatten(Procedure * proc){
-	TODO(Implement me)
+	Opd * lOpd = myExp1->flatten(proc);
+	Opd * rOpd = myExp2->flatten(proc);
+	AuxOpd * temp = proc->makeTmp(8);
+	BinOpQuad * boq = new BinOpQuad(temp, OR64, lOpd, rOpd);
+	proc->addQuad(boq);
+	return temp;
 }
 
 Opd * EqualsNode::flatten(Procedure * proc){
-	TODO(Implement me)
+	Opd * lOpd = myExp1->flatten(proc);
+	Opd * rOpd = myExp2->flatten(proc);
+	AuxOpd * temp = proc->makeTmp(8);
+	BinOpQuad * boq = new BinOpQuad(temp, EQ64, lOpd, rOpd);
+	proc->addQuad(boq);
+	return temp;
 }
 
 Opd * NotEqualsNode::flatten(Procedure * proc){
-	TODO(Implement me)
+	Opd * lOpd = myExp1->flatten(proc);
+	Opd * rOpd = myExp2->flatten(proc);
+	AuxOpd * temp = proc->makeTmp(8);
+	BinOpQuad * boq = new BinOpQuad(temp, NEQ64, lOpd, rOpd);
+	proc->addQuad(boq);
+	return temp;
 }
 
 Opd * LessNode::flatten(Procedure * proc){
-	TODO(Implement me)
+	Opd * lOpd = myExp1->flatten(proc);
+	Opd * rOpd = myExp2->flatten(proc);
+	AuxOpd * temp = proc->makeTmp(8);
+	BinOpQuad * boq = new BinOpQuad(temp, LT64, lOpd, rOpd);
+	proc->addQuad(boq);
+	return temp;
 }
 
 Opd * GreaterNode::flatten(Procedure * proc){
-	TODO(Implement me)
+	Opd * lOpd = myExp1->flatten(proc);
+	Opd * rOpd = myExp2->flatten(proc);
+	AuxOpd * temp = proc->makeTmp(8);
+	BinOpQuad * boq = new BinOpQuad(temp, GT64, lOpd, rOpd);
+	proc->addQuad(boq);
+	return temp;
 }
 
 Opd * LessEqNode::flatten(Procedure * proc){
-	TODO(Implement me)
+	Opd * lOpd = myExp1->flatten(proc);
+	Opd * rOpd = myExp2->flatten(proc);
+	AuxOpd * temp = proc->makeTmp(8);
+	BinOpQuad * boq = new BinOpQuad(temp, LTE64, lOpd, rOpd);
+	proc->addQuad(boq);
+	return temp;
 }
 
 Opd * GreaterEqNode::flatten(Procedure * proc){
-	TODO(Implement me)
+	Opd * lOpd = myExp1->flatten(proc);
+	Opd * rOpd = myExp2->flatten(proc);
+	AuxOpd * temp = proc->makeTmp(8);
+	BinOpQuad * boq = new BinOpQuad(temp, GTE64, lOpd, rOpd);
+	proc->addQuad(boq);
+	return temp;
 }
 
 void AssignStmtNode::to3AC(Procedure * proc){
