@@ -81,8 +81,8 @@ Opd * AssignExpNode::flatten(Procedure * proc){
 	return dstOpd;
 }
 
-Opd * LValNode::flatten(Procedure * proc){
-	TODO("how did you get here?");
+Opd * LValNode::flatten(Procedure * proc) {
+	return nullptr;
 }
 
 Opd * CallExpNode::flatten(Procedure * proc){
@@ -222,8 +222,8 @@ Opd * GreaterEqNode::flatten(Procedure * proc){
 	return temp;
 }
 
-void AssignStmtNode::to3AC(Procedure * proc){
-	this->myExp->flatten(proc);
+void AssignStmtNode::to3AC(Procedure * proc) {
+	myExp->flatten(proc);
 }
 
 void PostIncStmtNode::to3AC(Procedure * proc){
