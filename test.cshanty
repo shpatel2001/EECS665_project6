@@ -6,10 +6,16 @@ record someRec {
 
 void test(int b)
 {
-	a = b;
+	a = a + 1;
+	while (true)
+	{
+		a++;
+	}
+	return a;
 }
 
 int main() {
+	int c;
 	test(2);
 	someRec w;
 	w[x] = 1;

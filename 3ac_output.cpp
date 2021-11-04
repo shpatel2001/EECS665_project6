@@ -263,7 +263,6 @@ void IfStmtNode::to3AC(Procedure * proc){
 	{
 		stmt->to3AC(proc);
 	}
-	//not sure about how to jump to the end of the if
 }
 
 void IfElseStmtNode::to3AC(Procedure * proc){
@@ -279,7 +278,6 @@ void IfElseStmtNode::to3AC(Procedure * proc){
 	{
 		stmt->to3AC(proc);
 	}
-	//not sure about how to jump to the end of the if
 }
 
 void WhileStmtNode::to3AC(Procedure * proc){
