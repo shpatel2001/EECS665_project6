@@ -12,7 +12,6 @@ IRProgram * ProgramNode::to3AC(TypeAnalysis * ta){
 
 void FnDeclNode::to3AC(IRProgram * prog){
 	Procedure * proc = prog->makeProc(ID()->getName());
-	EnterQuad * enter = new EnterQuad(proc);
 	for(auto Formal : *myFormals)
 	{
 		Formal->to3AC(proc);
@@ -40,8 +39,8 @@ void FormalDeclNode::to3AC(IRProgram * prog){
 }
 
 void FormalDeclNode::to3AC(Procedure * proc){
-	Opd * IDOpd = ID()->flatten(proc);
-	GetArgQuad * getQuad = new GetArgQuad(8, IDOpd);
+	proc->gatherFormal(ID()->getSymbol());
+	GetArgQuad * getQuad = new GetArgQuad(8, proc->getFormals().back());
 	proc->addQuad(getQuad);
 }
 
