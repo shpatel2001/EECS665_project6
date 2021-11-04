@@ -1,12 +1,4 @@
-int test(int a)
+void test(int a)
 {
-	a = a + 2;
-	return a;
-}
-
-int main()
-{
-	test(4);
-	int b;
-	b = b + 2;
+	a = 1;
 }

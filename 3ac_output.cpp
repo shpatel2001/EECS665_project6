@@ -11,10 +11,10 @@ IRProgram * ProgramNode::to3AC(TypeAnalysis * ta){
 }
 
 void FnDeclNode::to3AC(IRProgram * prog){
-	Procedure * proc = prog->makeProc(this->ID()->getName());
+	Procedure * proc = prog->makeProc(ID()->getName());
+	EnterQuad * enter = new EnterQuad(proc);
 	for(auto Formal : *myFormals)
 	{
-		TODO(Implement me)
 		Formal->to3AC(proc);
 	}
 	for(auto stmt : *myBody)
@@ -307,7 +307,7 @@ Opd * IndexNode::flatten(Procedure * proc){
 //We only get to this node if we are in a stmt
 // context (DeclNodes protect descent) 
 Opd * IDNode::flatten(Procedure * proc) {
-	return proc->getSymOpd(this->mySymbol);
+	return proc->getSymOpd(mySymbol);
 }
 
 }
