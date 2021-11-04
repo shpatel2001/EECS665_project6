@@ -2,15 +2,15 @@
 
 namespace cshanty{
 
-IRProgram * ProgramNode::to3AC(TypeAnalysis * ta){
+IRProgram * ProgramNode::to3AC(TypeAnalysis * ta) {
 	IRProgram * prog = new IRProgram(ta);
-	for (auto global : *myGlobals){
+	for (auto global : *myGlobals) {
 		global->to3AC(prog);
 	}
 	return prog;
 }
 
-void FnDeclNode::to3AC(IRProgram * prog){
+void FnDeclNode::to3AC(IRProgram * prog) {
 	Procedure * proc = prog->makeProc(ID()->getName());
 	for(auto Formal : *myFormals)
 	{
@@ -22,7 +22,7 @@ void FnDeclNode::to3AC(IRProgram * prog){
 	}
 }
 
-void FnDeclNode::to3AC(Procedure * proc){
+void FnDeclNode::to3AC(Procedure * proc) {
 	//This never needs to be implemented,
 	// the function only exists because of 
 	// inheritance needs (A function declaration
@@ -30,7 +30,7 @@ void FnDeclNode::to3AC(Procedure * proc){
 	throw new InternalError("FnDecl at a local scope");
 }
 
-void FormalDeclNode::to3AC(IRProgram * prog){
+void FormalDeclNode::to3AC(IRProgram * prog) {
 	//This never needs to be implemented,
 	// the function only exists because of 
 	// inheritance needs (A formal never 
@@ -38,42 +38,42 @@ void FormalDeclNode::to3AC(IRProgram * prog){
 	throw new InternalError("Formal at a global scope");
 }
 
-void FormalDeclNode::to3AC(Procedure * proc){
+void FormalDeclNode::to3AC(Procedure * proc) {
 	proc->gatherFormal(ID()->getSymbol());
 	auto formalList = proc->getFormals();
 	GetArgQuad * getQuad = new GetArgQuad(formalList.size(), formalList.back());
 	proc->addQuad(getQuad);
 }
 
-void RecordTypeDeclNode::to3AC(IRProgram * prog){
+void RecordTypeDeclNode::to3AC(IRProgram * prog) {
 	
 }
 
-void RecordTypeDeclNode::to3AC(Procedure * proc){
+void RecordTypeDeclNode::to3AC(Procedure * proc) {
 	TODO("This shouldn't happen")
 }
 
-Opd * IntLitNode::flatten(Procedure * proc){
+Opd * IntLitNode::flatten(Procedure * proc) {
 	const DataType * type = proc->getProg()->nodeType(this);
 	return new LitOpd(std::to_string(myNum), 8);
 }
 
-Opd * StrLitNode::flatten(Procedure * proc){
+Opd * StrLitNode::flatten(Procedure * proc) {
 	Opd * res = proc->getProg()->makeString(myStr);
 	return res;
 }
 
-Opd * TrueNode::flatten(Procedure * proc){
+Opd * TrueNode::flatten(Procedure * proc) {
 	const DataType * type = proc->getProg()->nodeType(this);
 	return new LitOpd(std::to_string(1), 8);
 }
 
-Opd * FalseNode::flatten(Procedure * proc){
+Opd * FalseNode::flatten(Procedure * proc) {
 	const DataType * type = proc->getProg()->nodeType(this);
 	return new LitOpd(std::to_string(0), 8);
 }
 
-Opd * AssignExpNode::flatten(Procedure * proc){
+Opd * AssignExpNode::flatten(Procedure * proc) {
 	Opd * srcOpd = mySrc->flatten(proc);
 	Opd * dstOpd = myDst->flatten(proc);
 	AssignQuad * assign = new AssignQuad(dstOpd, srcOpd);
@@ -85,7 +85,7 @@ Opd * LValNode::flatten(Procedure * proc) {
 	TODO("what");
 }
 
-Opd * CallExpNode::flatten(Procedure * proc){
+Opd * CallExpNode::flatten(Procedure * proc) {
 	for(auto args : *myArgs)
 	{
 		Opd * argOpd = args->flatten(proc);
@@ -98,7 +98,7 @@ Opd * CallExpNode::flatten(Procedure * proc){
 	return proc->getSymOpd(IdSym);
 }
 
-Opd * NegNode::flatten(Procedure * proc){
+Opd * NegNode::flatten(Procedure * proc) {
 	Opd * src = myExp->flatten(proc);
 	AuxOpd * temp = proc->makeTmp(8);
 	UnaryOpQuad * quad = new UnaryOpQuad(temp, NEG64, src);
@@ -106,7 +106,7 @@ Opd * NegNode::flatten(Procedure * proc){
 	return temp;
 }
 
-Opd * NotNode::flatten(Procedure * proc){
+Opd * NotNode::flatten(Procedure * proc) {
 	Opd * src = myExp->flatten(proc);
 	AuxOpd * temp = proc->makeTmp(8);
 	UnaryOpQuad * quad = new UnaryOpQuad(temp, NOT64, src);
@@ -114,7 +114,7 @@ Opd * NotNode::flatten(Procedure * proc){
 	return temp;
 }
 
-Opd * PlusNode::flatten(Procedure * proc){
+Opd * PlusNode::flatten(Procedure * proc) {
 	Opd * lOpd = myExp1->flatten(proc);
 	Opd * rOpd = myExp2->flatten(proc);
 	AuxOpd * temp = proc->makeTmp(8);
@@ -123,7 +123,7 @@ Opd * PlusNode::flatten(Procedure * proc){
 	return temp;
 }
 
-Opd * MinusNode::flatten(Procedure * proc){
+Opd * MinusNode::flatten(Procedure * proc) {
 	Opd * lOpd = myExp1->flatten(proc);
 	Opd * rOpd = myExp2->flatten(proc);
 	AuxOpd * temp = proc->makeTmp(8);
@@ -132,7 +132,7 @@ Opd * MinusNode::flatten(Procedure * proc){
 	return temp;
 }
 
-Opd * TimesNode::flatten(Procedure * proc){
+Opd * TimesNode::flatten(Procedure * proc) {
 	Opd * lOpd = myExp1->flatten(proc);
 	Opd * rOpd = myExp2->flatten(proc);
 	AuxOpd * temp = proc->makeTmp(8);
@@ -141,7 +141,7 @@ Opd * TimesNode::flatten(Procedure * proc){
 	return temp;
 }
 
-Opd * DivideNode::flatten(Procedure * proc){
+Opd * DivideNode::flatten(Procedure * proc) {
 	Opd * lOpd = myExp1->flatten(proc);
 	Opd * rOpd = myExp2->flatten(proc);
 	AuxOpd * temp = proc->makeTmp(8);
@@ -150,7 +150,7 @@ Opd * DivideNode::flatten(Procedure * proc){
 	return temp;
 }
 
-Opd * AndNode::flatten(Procedure * proc){
+Opd * AndNode::flatten(Procedure * proc) {
 	Opd * lOpd = myExp1->flatten(proc);
 	Opd * rOpd = myExp2->flatten(proc);
 	AuxOpd * temp = proc->makeTmp(8);
@@ -159,7 +159,7 @@ Opd * AndNode::flatten(Procedure * proc){
 	return temp;
 }
 
-Opd * OrNode::flatten(Procedure * proc){
+Opd * OrNode::flatten(Procedure * proc) {
 	Opd * lOpd = myExp1->flatten(proc);
 	Opd * rOpd = myExp2->flatten(proc);
 	AuxOpd * temp = proc->makeTmp(8);
@@ -168,7 +168,7 @@ Opd * OrNode::flatten(Procedure * proc){
 	return temp;
 }
 
-Opd * EqualsNode::flatten(Procedure * proc){
+Opd * EqualsNode::flatten(Procedure * proc) {
 	Opd * lOpd = myExp1->flatten(proc);
 	Opd * rOpd = myExp2->flatten(proc);
 	AuxOpd * temp = proc->makeTmp(8);
@@ -177,7 +177,7 @@ Opd * EqualsNode::flatten(Procedure * proc){
 	return temp;
 }
 
-Opd * NotEqualsNode::flatten(Procedure * proc){
+Opd * NotEqualsNode::flatten(Procedure * proc) {
 	Opd * lOpd = myExp1->flatten(proc);
 	Opd * rOpd = myExp2->flatten(proc);
 	AuxOpd * temp = proc->makeTmp(8);
@@ -186,7 +186,7 @@ Opd * NotEqualsNode::flatten(Procedure * proc){
 	return temp;
 }
 
-Opd * LessNode::flatten(Procedure * proc){
+Opd * LessNode::flatten(Procedure * proc) {
 	Opd * lOpd = myExp1->flatten(proc);
 	Opd * rOpd = myExp2->flatten(proc);
 	AuxOpd * temp = proc->makeTmp(8);
@@ -195,7 +195,7 @@ Opd * LessNode::flatten(Procedure * proc){
 	return temp;
 }
 
-Opd * GreaterNode::flatten(Procedure * proc){
+Opd * GreaterNode::flatten(Procedure * proc) {
 	Opd * lOpd = myExp1->flatten(proc);
 	Opd * rOpd = myExp2->flatten(proc);
 	AuxOpd * temp = proc->makeTmp(8);
@@ -204,7 +204,7 @@ Opd * GreaterNode::flatten(Procedure * proc){
 	return temp;
 }
 
-Opd * LessEqNode::flatten(Procedure * proc){
+Opd * LessEqNode::flatten(Procedure * proc) {
 	Opd * lOpd = myExp1->flatten(proc);
 	Opd * rOpd = myExp2->flatten(proc);
 	AuxOpd * temp = proc->makeTmp(8);
@@ -213,7 +213,7 @@ Opd * LessEqNode::flatten(Procedure * proc){
 	return temp;
 }
 
-Opd * GreaterEqNode::flatten(Procedure * proc){
+Opd * GreaterEqNode::flatten(Procedure * proc) {
 	Opd * lOpd = myExp1->flatten(proc);
 	Opd * rOpd = myExp2->flatten(proc);
 	AuxOpd * temp = proc->makeTmp(8);
@@ -226,35 +226,35 @@ void AssignStmtNode::to3AC(Procedure * proc) {
 	myExp->flatten(proc);
 }
 
-void PostIncStmtNode::to3AC(Procedure * proc){
+void PostIncStmtNode::to3AC(Procedure * proc) {
 	Opd * opd = myLVal->flatten(proc);
 	LitOpd * lopd = new LitOpd("1", 8);
 	BinOpQuad * boq = new BinOpQuad(opd, ADD64, opd, lopd);
 	proc->addQuad(boq);
 }
 
-void PostDecStmtNode::to3AC(Procedure * proc){
+void PostDecStmtNode::to3AC(Procedure * proc) {
 	Opd * opd = myLVal->flatten(proc);
 	LitOpd * lopd = new LitOpd("1", 8);
 	BinOpQuad * boq = new BinOpQuad(opd, SUB64, opd, lopd);
 	proc->addQuad(boq);
 }
 
-void ReceiveStmtNode::to3AC(Procedure * proc){
+void ReceiveStmtNode::to3AC(Procedure * proc) {
 	Opd * DstOpd = myDst->flatten(proc);
 	auto type = proc->getProg()->nodeType(myDst);
 	ReceiveQuad * receive = new ReceiveQuad(DstOpd, type);
 	proc->addQuad(receive);
 }
 
-void ReportStmtNode::to3AC(Procedure * proc){
+void ReportStmtNode::to3AC(Procedure * proc) {
 	Opd * srcOpd = mySrc->flatten(proc);
 	auto type = proc->getProg()->nodeType(mySrc);
 	ReportQuad * report = new ReportQuad(srcOpd, type);
 	proc->addQuad(report);
 }
 
-void IfStmtNode::to3AC(Procedure * proc){
+void IfStmtNode::to3AC(Procedure * proc) {
 	Opd * CondOpd = myCond->flatten(proc);
 	Label * end_of_if = proc->makeLabel();
 	IfzQuad * ifz = new IfzQuad(CondOpd,end_of_if);
@@ -265,7 +265,7 @@ void IfStmtNode::to3AC(Procedure * proc){
 	}
 }
 
-void IfElseStmtNode::to3AC(Procedure * proc){
+void IfElseStmtNode::to3AC(Procedure * proc) {
 	Opd * CondOpd = myCond->flatten(proc);
 	Label * end_of_if = proc->makeLabel();
 	IfzQuad * ifz = new IfzQuad(CondOpd,end_of_if);
@@ -280,18 +280,18 @@ void IfElseStmtNode::to3AC(Procedure * proc){
 	}
 }
 
-void WhileStmtNode::to3AC(Procedure * proc){
+void WhileStmtNode::to3AC(Procedure * proc) {
 	TODO(Implement me)
 }
 
-void CallStmtNode::to3AC(Procedure * proc){
+void CallStmtNode::to3AC(Procedure * proc) {
 	myCallExp->flatten(proc);
 	auto aux = proc->makeTmp(8);
 	auto getRet = new GetRetQuad(aux);
 	proc->addQuad(getRet);
 }
 
-void ReturnStmtNode::to3AC(Procedure * proc){
+void ReturnStmtNode::to3AC(Procedure * proc) {
 	auto expOpd = myExp->flatten(proc);
 	auto setret = new SetRetQuad(expOpd);
 	proc->addQuad(setret);
@@ -299,19 +299,19 @@ void ReturnStmtNode::to3AC(Procedure * proc){
     proc->addQuad(goto_end);
 }
 
-void VarDeclNode::to3AC(Procedure * proc){
+void VarDeclNode::to3AC(Procedure * proc) {
 	SemSymbol * sym = ID()->getSymbol();
 	assert(sym != nullptr);
 	proc->gatherLocal(sym);
 }
 
-void VarDeclNode::to3AC(IRProgram * prog){
+void VarDeclNode::to3AC(IRProgram * prog) {
 	SemSymbol * sym = ID()->getSymbol();
 	assert(sym != nullptr);
 	prog->gatherGlobal(sym);
 }
 
-Opd * IndexNode::flatten(Procedure * proc){
+Opd * IndexNode::flatten(Procedure * proc) {
 	TODO(Implement me)
 }
 
