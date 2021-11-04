@@ -76,6 +76,7 @@ Opd * FalseNode::flatten(Procedure * proc){
 Opd * AssignExpNode::flatten(Procedure * proc){
 	Opd * srcOpd = mySrc->flatten(proc);
 	Opd * dstOpd = myDst->flatten(proc);
+	std::cout << (dstOpd == nullptr);
 	AssignQuad * assign = new AssignQuad(dstOpd, srcOpd);
 	proc->addQuad(assign);
 	return dstOpd;
