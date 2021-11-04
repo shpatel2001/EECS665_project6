@@ -7,11 +7,6 @@ record someRec {
 void test(int b)
 {
 	a = a + 1;
-	while (true)
-	{
-		a++;
-	}
-	return a;
 }
 
 int main() {
