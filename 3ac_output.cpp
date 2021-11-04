@@ -260,7 +260,6 @@ void IfStmtNode::to3AC(Procedure * proc){
 	NopQuad * endofif = new NopQuad();
 	endofif->addLabel(end_of_if);
 	proc->addQuad(endofif);
-	//not sure about how to jump to the end of the if
 }
 
 void IfElseStmtNode::to3AC(Procedure * proc){
@@ -288,7 +287,6 @@ void IfElseStmtNode::to3AC(Procedure * proc){
 	NopQuad * endofif = new NopQuad();
 	endofif->addLabel(end_of_if);
 	proc->addQuad(endofif);
-	//not sure about how to jump to the end of the if
 }
 
 void WhileStmtNode::to3AC(Procedure * proc){
