@@ -46,11 +46,11 @@ void FormalDeclNode::to3AC(Procedure * proc){
 }
 
 void RecordTypeDeclNode::to3AC(IRProgram * prog){
-	TODO(Implement me)
+	
 }
 
 void RecordTypeDeclNode::to3AC(Procedure * proc){
-	TODO(Implement me)
+	TODO("This shouldn't happen")
 }
 
 Opd * IntLitNode::flatten(Procedure * proc){

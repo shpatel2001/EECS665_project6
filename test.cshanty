@@ -1,5 +1,9 @@
 int a;
 
+record someRec {
+	int x;
+}
+
 void test(int b)
 {
 	a = b;
@@ -7,4 +11,6 @@ void test(int b)
 
 int main() {
 	test(2);
+	someRec w;
+	w[x] = 1;
 }
