@@ -40,7 +40,8 @@ void FormalDeclNode::to3AC(IRProgram * prog){
 
 void FormalDeclNode::to3AC(Procedure * proc){
 	proc->gatherFormal(ID()->getSymbol());
-	GetArgQuad * getQuad = new GetArgQuad(8, proc->getFormals().back());
+	auto formalList = proc->getFormals();
+	GetArgQuad * getQuad = new GetArgQuad(formalList.size(), formalList.back());
 	proc->addQuad(getQuad);
 }
 
@@ -75,7 +76,6 @@ Opd * FalseNode::flatten(Procedure * proc){
 Opd * AssignExpNode::flatten(Procedure * proc){
 	Opd * srcOpd = mySrc->flatten(proc);
 	Opd * dstOpd = myDst->flatten(proc);
-	std::cout << (dstOpd == nullptr);
 	AssignQuad * assign = new AssignQuad(dstOpd, srcOpd);
 	proc->addQuad(assign);
 	return dstOpd;
