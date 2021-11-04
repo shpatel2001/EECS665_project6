@@ -302,7 +302,7 @@ void WhileStmtNode::to3AC(Procedure * proc){
 	Label * end_of_while = proc->makeLabel();
 
 	NopQuad * startofwhile = new NopQuad();
-	endoftrue->addLabel(start_of_while);
+	startofwhile->addLabel(start_of_while);
 	proc->addQuad(startofwhile);
 
 	IfzQuad * ifz = new IfzQuad(CondOpd,end_of_while);
@@ -317,7 +317,7 @@ void WhileStmtNode::to3AC(Procedure * proc){
 	proc->addQuad(goto_start);
 
 	NopQuad * endofwhile = new NopQuad();
-	endoftrue->addLabel(end_of_while);
+	endofwhile->addLabel(end_of_while);
 	proc->addQuad(endofwhile);
 	//help
 }
