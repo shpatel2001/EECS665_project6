@@ -46,7 +46,7 @@ void FormalDeclNode::to3AC(Procedure * proc) {
 }
 
 void RecordTypeDeclNode::to3AC(IRProgram * prog) {
-	prog->gatherGlobal(myID->getSymbol());
+	// prog->gatherGlobal(myID->getSymbol());
 }
 
 void RecordTypeDeclNode::to3AC(Procedure * proc) {
