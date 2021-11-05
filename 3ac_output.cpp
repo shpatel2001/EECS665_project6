@@ -341,9 +341,14 @@ void VarDeclNode::to3AC(IRProgram * prog) {
 }
 
 Opd * IndexNode::flatten(Procedure * proc) {
+	SymOpd * recordOpd = proc->getLocals().at(myBase->getSymbol());
 	auto record = myBase->getSymbol()->getDataType()->asRecord();
-	auto offset = record->getOffset(myIdx->getName());
-	proc->makeAddrOpd(8);
+	int offset = record->getOffset(myIdx->getName());
+	AddrOpd * addr = proc->makeAddrOpd(8);
+	LitOpd * aux = new LitOpd(to_string(offset), 8);
+	BinOpQuad * bop = new BinOpQuad(addr, ADD64, recordOpd, aux);
+	proc->addQuad(bop);
+	return addr;
 }
 
 //We only get to this node if we are in a stmt
