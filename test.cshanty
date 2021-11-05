@@ -6,7 +6,13 @@ record someRec {
 
 void test(int b)
 {
-	a = a + 1;
+	if (b == 2) {
+		a = b;
+	} else {
+		while (b < 2) {
+			b++;
+		}
+	}
 }
 
 int main() {
