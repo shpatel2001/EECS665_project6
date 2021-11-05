@@ -341,14 +341,9 @@ void VarDeclNode::to3AC(IRProgram * prog) {
 }
 
 Opd * IndexNode::flatten(Procedure * proc) {
-	try
-	{
-		auto symOpd = proc->getLocals().at(myBase->getSymbol());
-		symOpd->
-	}
-	catch (std::runtime_error e) {
-		auto symOpd = proc->getProg()->getGlobal(myBase->getSymbol());
-	}
+	auto record = myBase->getSymbol()->getDataType()->asRecord();
+	auto offset = record->getOffset(myIdx->getName());
+	proc->makeAddrOpd(8);
 }
 
 //We only get to this node if we are in a stmt

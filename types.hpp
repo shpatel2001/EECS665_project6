@@ -181,6 +181,12 @@ public:
 	const RecordType * asRecord() const override { return this; }
 	bool isRecord() const override { return true; }
 
+	int getOffset(std::string name) const { 
+		int num = 0;
+		num += (*fieldOffsets)[name];
+		return num;
+		}
+
 	const DataType * getField(std::string fieldName) const{
 		auto res = fieldTypes->find(fieldName);
 		if (res == fieldTypes->end()){ return nullptr; }
@@ -189,9 +195,17 @@ public:
 private:
 	RecordType(std::string nameIn, HashMap<std::string, const DataType *> * fieldsIn) 
 	: name(nameIn), fieldTypes(fieldsIn){ 
+		fieldOffsets = new HashMap<std::string, int>();
+		int offset = 0;
+		for (auto field : *fieldTypes)
+		{
+			(*fieldOffsets)[field.first] = offset;
+			offset += 8;
+		}
 	}
 	std::string name;
 	HashMap<std::string, const DataType *> *fieldTypes;
+	HashMap<std::string, int> * fieldOffsets;
 };
 
 //DataType subclass to represent the type of a function. It will
