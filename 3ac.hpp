@@ -38,6 +38,9 @@ public:
 		if (const BasicType * basic = type->asBasic()){
 			return 8;
 		}
+		else {
+			return type->getSize();
+		}
 		assert(false);
 	}
 private:
