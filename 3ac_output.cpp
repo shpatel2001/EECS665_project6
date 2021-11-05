@@ -345,8 +345,9 @@ Opd * IndexNode::flatten(Procedure * proc) {
 	auto record = myBase->getSymbol()->getDataType()->asRecord();
 	int offset = record->getOffset(myIdx->getName());
 	AddrOpd * addr = proc->makeAddrOpd(8);
-	LitOpd * aux = new LitOpd(to_string(offset), 8);
-	BinOpQuad * bop = new BinOpQuad(addr, ADD64, recordOpd, aux);
+	LitOpd * lit1 = new LitOpd(recordOpd->getName(), 8);
+	LitOpd * lit2 = new LitOpd(to_string(offset), 8);
+	BinOpQuad * bop = new BinOpQuad(addr, ADD64, lit1, lit2);
 	proc->addQuad(bop);
 	return addr;
 }
