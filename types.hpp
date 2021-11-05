@@ -177,7 +177,14 @@ public:
 	};
 	bool validVarType() const override { return true; }
 	std::string getString() const override { return name; }
-	size_t getSize() const override { return fieldOffsets->size(); }
+	size_t getSize() const override { 
+		size_t size = 0;
+		for (auto nameTypePair : *fieldTypes)
+		{
+			size += nameTypePair.second->getSize();
+		}
+		return size;
+	 }
 	const RecordType * asRecord() const override { return this; }
 	bool isRecord() const override { return true; }
 
