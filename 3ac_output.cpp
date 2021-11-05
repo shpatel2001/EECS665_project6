@@ -268,15 +268,24 @@ void IfStmtNode::to3AC(Procedure * proc) {
 	proc->addQuad(endofif);
 }
 
-void IfElseStmtNode::to3AC(Procedure * proc) {
+void IfElseStmtNode::to3AC(Procedure * proc){
 	Opd * CondOpd = myCond->flatten(proc);
+	
+	Label * end_of_true_body = proc->makeLabel();
 	Label * end_of_if = proc->makeLabel();
-	IfzQuad * ifz = new IfzQuad(CondOpd,end_of_if);
+	
+	IfzQuad * ifz = new IfzQuad(CondOpd,end_of_true_body);
 	proc->addQuad(ifz);
 	for(auto stmt : *myBodyTrue)
 	{
 		stmt->to3AC(proc);
 	}
+	GotoQuad * goto_end = new GotoQuad(end_of_if);
+	proc->addQuad(goto_end);
+
+	NopQuad * endoftrue = new NopQuad();
+	endoftrue->addLabel(end_of_true_body);
+	proc->addQuad(endoftrue);
 	for(auto stmt : *myBodyFalse)
 	{
 		stmt->to3AC(proc);
@@ -284,7 +293,9 @@ void IfElseStmtNode::to3AC(Procedure * proc) {
 	NopQuad * endofif = new NopQuad();
 	endofif->addLabel(end_of_if);
 	proc->addQuad(endofif);
+	//not sure about how to jump to the end of the if
 }
+
 
 void WhileStmtNode::to3AC(Procedure * proc){
 	Opd * CondOpd = myCond->flatten(proc);
