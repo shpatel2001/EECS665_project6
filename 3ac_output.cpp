@@ -52,7 +52,7 @@ void RecordTypeDeclNode::to3AC(IRProgram * prog) {
 }
 
 void RecordTypeDeclNode::to3AC(Procedure * proc) {
-	proc->gatherLocal(myID->getSymbol());
+	// proc->gatherLocal(myID->getSymbol());
 }
 
 Opd * IntLitNode::flatten(Procedure * proc) {
