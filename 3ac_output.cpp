@@ -46,13 +46,11 @@ void FormalDeclNode::to3AC(Procedure * proc) {
 }
 
 void RecordTypeDeclNode::to3AC(IRProgram * prog) {
-	// SemSymbol * sym = myID->getSymbol();
-	// assert(sym != nullptr);
-	// prog->gatherGlobal(sym);
+
 }
 
 void RecordTypeDeclNode::to3AC(Procedure * proc) {
-	// proc->gatherLocal(myID->getSymbol());
+
 }
 
 Opd * IntLitNode::flatten(Procedure * proc) {
